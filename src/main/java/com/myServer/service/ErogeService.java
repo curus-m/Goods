@@ -10,4 +10,5 @@ import com.myServer.model.Eroge;
 public interface ErogeService {
 
 	public List<Eroge> getEroge() throws Exception;
+	public int addEroge(Eroge eroge) throws Exception;
 }

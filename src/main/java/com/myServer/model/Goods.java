@@ -6,8 +6,10 @@ public class Goods {
 	private String title;	
 	private String brand;	
 	private Date releaseDate;	
+	private int no;
 	private int price;
 	private int purchase;
+	
 	
 	public String getTitle() {
 		return title;
@@ -38,5 +40,11 @@ public class Goods {
 	}
 	public void setPurchase(int purchase) {
 		this.purchase = purchase;
+	}
+	public int getNo() {
+		return no;
+	}
+	public void setNo(int no) {
+		this.no = no;
 	}
 }

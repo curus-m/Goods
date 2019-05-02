@@ -2,16 +2,9 @@ package com.myServer.model;
 
 public class Eroge extends Goods {
 
-	private String id;	
+	private String gid;
 	private String[] illust;	
 	private String image;
-	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	
 	public String[] getIllust() {
 		return illust;
@@ -24,5 +17,11 @@ public class Eroge extends Goods {
 	}
 	public void setImage(String image) {
 		this.image = image;
+	}
+	public String getGid() {
+		return gid;
+	}
+	public void setGid(String gid) {
+		this.gid = gid;
 	}
 }
