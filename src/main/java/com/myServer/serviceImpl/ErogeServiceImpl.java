@@ -42,5 +42,15 @@ public class ErogeServiceImpl implements ErogeService {
        
 		return template.update(query,param, holder);
 	}
+	@Override
+	public int deleteEroge(Eroge eroge) throws Exception {
+		final String query =
+				"delete from eroge where gid == :gid";
+        KeyHolder holder = new GeneratedKeyHolder();
+        SqlParameterSource param = new MapSqlParameterSource()
+        		.addValue("no", eroge.getNo());
+              
+		return template.update(query,param, holder);
+	}
 
 }

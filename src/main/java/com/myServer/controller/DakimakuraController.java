@@ -12,29 +12,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.myServer.model.Eroge;
+import com.myServer.model.Dakimakura;
 import com.myServer.model.Result;
-import com.myServer.service.ErogeService;
+import com.myServer.service.DakimakuraService;
+
 
 @CrossOrigin(origins = "*")
-@RequestMapping("/eroge")
+@RequestMapping("/dakimakura")
 @ComponentScan
 @Controller
-public class ErogeController {
+public class DakimakuraController {
 	
 	@Resource
-	ErogeService erogeService;
-	
+	DakimakuraService dakimakuraService;
 	@RequestMapping(value = "/", method=RequestMethod.GET)
-	public @ResponseBody List<Eroge> erogeList() throws Exception {
+	public @ResponseBody List<Dakimakura> erogeList() throws Exception {
 
-		return erogeService.getEroge();
+		return dakimakuraService.getDakimakura();
 	}
 	@RequestMapping(value = "/", method=RequestMethod.POST)
-	public @ResponseBody Result addEroge(@RequestBody Eroge eroge) throws Exception {
+	public @ResponseBody Result addEroge(@RequestBody Dakimakura daki) throws Exception {
 		Result result = new Result();
 		try {
-			result.setResult(erogeService.addEroge(eroge));
+			result.setResult(dakimakuraService.addDakimakura(daki));
 			result.setErrorMessage("OK");
 		}
 		catch (Exception e) {
@@ -44,10 +44,10 @@ public class ErogeController {
 		return result;
 	}
 	@RequestMapping(value = "/", method=RequestMethod.DELETE)
-	public @ResponseBody Result deleteEroge(@RequestBody Eroge eroge) throws Exception {
+	public @ResponseBody Result deleteEroge(@RequestBody Dakimakura daki) throws Exception {
 		Result result = new Result();
 		try {
-			result.setResult(erogeService.deleteEroge(eroge));
+			result.setResult(dakimakuraService.deleteDakimakura(daki));
 			result.setErrorMessage("OK");
 		}
 		catch (Exception e) {

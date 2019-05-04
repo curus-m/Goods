@@ -5,7 +5,7 @@ import java.util.Date;
 public class Goods {
 	private String title;	
 	private String brand;	
-	private Date releaseDate;	
+	private Date releaseDate;
 	private int no;
 	private int price;
 	private int purchase;
