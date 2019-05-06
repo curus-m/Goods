@@ -9,7 +9,7 @@ public class Goods {
 	private int no;
 	private int price;
 	private int purchase;
-	
+	private String image;
 	
 	public String getTitle() {
 		return title;
@@ -46,5 +46,11 @@ public class Goods {
 	}
 	public void setNo(int no) {
 		this.no = no;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
 	}
 }
