@@ -20,9 +20,9 @@ public class DakimakuraServiceImpl implements DakimakuraService {
 	public DakimakuraServiceImpl(NamedParameterJdbcTemplate template) {
 		 this.template = template;
 	}
-	@Override
+	
 	public List<Dakimakura> getDakimakura() throws Exception {
-		String query = "select no, gid, title, brand, price, releaseDate from eroge";
+		String query = "select no, title, brand, price, releaseDate, material, description from dakimakura";
 		return template.query(query, new DakimakuraMapper());
 	}
 
@@ -44,12 +44,12 @@ public class DakimakuraServiceImpl implements DakimakuraService {
 	}
 
 	@Override
-	public int deleteDakimakura(Dakimakura daki) throws Exception {
+	public int deleteDakimakura(int no) throws Exception {
 		final String query =
-				"delete from eroge where no == :no";
+				"delete from dakimakura where no = :no";
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
-        		.addValue("no", daki.getNo());
+        		.addValue("no", no);
               
 		return template.update(query,param, holder);
 	}
