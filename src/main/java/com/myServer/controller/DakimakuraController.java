@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ public class DakimakuraController {
 	
 	@Resource
 	DakimakuraService dakimakuraService;
+	
 	@RequestMapping(value = "/", method=RequestMethod.GET)
 	public @ResponseBody List<Dakimakura> erogeList() throws Exception {
 
@@ -58,4 +60,5 @@ public class DakimakuraController {
 		}
 		return result;
 	}
+	
 }

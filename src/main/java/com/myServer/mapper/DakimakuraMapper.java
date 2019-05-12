@@ -19,6 +19,7 @@ public class DakimakuraMapper  implements RowMapper<Dakimakura>{
 		daki.setReleaseDate(rs.getDate(5));
 		daki.setMaterial(rs.getInt(6));
 		daki.setDescription(rs.getString(7));
+		daki.setImage(rs.getString(8));
 	    return daki;
 	}
 

@@ -22,7 +22,7 @@ public class DakimakuraServiceImpl implements DakimakuraService {
 	}
 	
 	public List<Dakimakura> getDakimakura() throws Exception {
-		String query = "select no, title, brand, price, releaseDate, material, description from dakimakura";
+		String query = "select no, title, brand, price, releaseDate, material, description, image from dakimakura";
 		return template.query(query, new DakimakuraMapper());
 	}
 

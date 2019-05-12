@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @ComponentScan
 @Controller
 public class myController {
-	@RequestMapping(value= "/**", method=RequestMethod.OPTIONS)
+	@RequestMapping(value= "/", method=RequestMethod.OPTIONS)
 	public void corsHeaders(HttpServletResponse response) {
 	    response.addHeader("Access-Control-Allow-Origin", "*");
 	    response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
