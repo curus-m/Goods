@@ -52,5 +52,21 @@ public class ErogeServiceImpl implements ErogeService {
               
 		return template.update(query,param, holder);
 	}
+	@Override
+	public int editEroge(Eroge eroge) throws Exception {
+		final String query =
+				"update eroge set gid = :gid, title = :title, brand = :brand, price = :price,"
+				+ " releaseDate = :releaseDate where no = :no";
+        KeyHolder holder = new GeneratedKeyHolder();
+        SqlParameterSource param = new MapSqlParameterSource()
+        		.addValue("gid", eroge.getGid())
+        		.addValue("title", eroge.getTitle())
+        		.addValue("brand", eroge.getBrand())
+        		.addValue("price", eroge.getPrice())
+        		.addValue("releaseDate",eroge.getReleaseDate())
+        		.addValue("no",eroge.getNo());
+              
+		return template.update(query,param, holder);
+	}
 
 }

@@ -2,9 +2,12 @@ package com.myServer.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Goods {
 	private String title;	
-	private String brand;	
+	private String brand;
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date releaseDate;
 	private int no;
 	private int price;

@@ -59,4 +59,17 @@ public class ErogeController {
 		}
 		return result;
 	}
+	@RequestMapping(value = "/", method=RequestMethod.PUT)
+	public @ResponseBody Result editEroge(@RequestBody Eroge eroge) throws Exception {
+		Result result = new Result();
+		try {
+			result.setResult(erogeService.editEroge(eroge));
+			result.setErrorMessage("OK");
+		}
+		catch (Exception e) {
+			result.setResult(0);
+			result.setErrorMessage(e.getMessage());
+		}
+		return result;
+	}
 }

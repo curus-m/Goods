@@ -11,5 +11,6 @@ public interface ErogeService {
 
 	public List<Eroge> getEroge() throws Exception;
 	public int addEroge(Eroge eroge) throws Exception;
+	public int editEroge(Eroge eroge) throws Exception;
 	public int deleteEroge(int no) throws Exception;
 }

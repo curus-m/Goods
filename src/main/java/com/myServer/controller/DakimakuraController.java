@@ -30,12 +30,12 @@ public class DakimakuraController {
 	DakimakuraService dakimakuraService;
 	
 	@RequestMapping(value = "/", method=RequestMethod.GET)
-	public @ResponseBody List<Dakimakura> erogeList() throws Exception {
-
-		return dakimakuraService.getDakimakura();
+	public @ResponseBody List<Dakimakura> dakimakuraList() throws Exception {
+		List<Dakimakura> list = dakimakuraService.getDakimakura(); 
+		return list;
 	}
 	@RequestMapping(value = "/", method=RequestMethod.POST)
-	public @ResponseBody Result addEroge(@RequestBody Dakimakura daki) throws Exception {
+	public @ResponseBody Result addDakimakura(@RequestBody Dakimakura daki) throws Exception {
 		Result result = new Result();
 		try {
 			result.setResult(dakimakuraService.addDakimakura(daki));
@@ -48,7 +48,7 @@ public class DakimakuraController {
 		return result;
 	}
 	@DeleteMapping("/{no}")
-	public @ResponseBody Result deleteEroge(@PathVariable int no) throws Exception {
+	public @ResponseBody Result deleteDakimakura(@PathVariable int no) throws Exception {
 		Result result = new Result();
 		try {
 			result.setResult(dakimakuraService.deleteDakimakura(no));
