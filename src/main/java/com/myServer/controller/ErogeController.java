@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,11 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myServer.model.Eroge;
 import com.myServer.model.Result;
 import com.myServer.service.ErogeService;
+import com.myServer.service.UploadService;
+import com.myServer.util.Logger;
 
 @CrossOrigin(origins = "*")
 @RequestMapping("/eroge")
@@ -27,16 +33,31 @@ public class ErogeController {
 	@Resource
 	ErogeService erogeService;
 	
+	@Resource
+    UploadService uploadService;
+
+	Logger logger;
+    @Autowired
+    public ErogeController(UploadService uploadService) {
+        this.uploadService  = uploadService;
+        logger = new Logger(ErogeController.class);
+    }
+
 	@RequestMapping(value = "/", method=RequestMethod.GET)
 	public @ResponseBody List<Eroge> erogeList() throws Exception {
 
 		return erogeService.getEroge();
 	}
 	@RequestMapping(value = "/", method=RequestMethod.POST)
-	public @ResponseBody Result addEroge(@RequestBody Eroge eroge) throws Exception {
+	public @ResponseBody Result addEroge(@RequestParam("eroge") String erogeString, @RequestParam("file") MultipartFile file) throws Exception {
 		Result result = new Result();
 		try {
-			result.setResult(erogeService.addEroge(eroge));
+//			logger.Log(erogeString);
+			ObjectMapper mapper = new ObjectMapper();
+			Eroge eroge = mapper.readValue(erogeString, Eroge.class);
+			logger.Log("brand " + eroge.getBrand());
+//			result.setResult(erogeService.addEroge(eroge));
+			result.setResult(1);
 			result.setErrorMessage("OK");
 		}
 		catch (Exception e) {
