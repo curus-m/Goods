@@ -1,12 +1,11 @@
 package com.myServer.util;
 
-import com.myServer.controller.ErogeController;
 
 public class Logger {
 
 	StringBuilder sb;
 	String className;
-	public Logger(Class<ErogeController> className) {
+	public Logger(Class<?> className) {
 		this.className = className.getName();
 	}
 	public void Log(String content) {

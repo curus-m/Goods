@@ -51,13 +51,22 @@ public class ErogeController {
 	@RequestMapping(value = "/", method=RequestMethod.POST)
 	public @ResponseBody Result addEroge(@RequestParam("eroge") String erogeString, @RequestParam("file") MultipartFile file) throws Exception {
 		Result result = new Result();
+		ObjectMapper mapper = new ObjectMapper();
+		Eroge eroge = mapper.readValue(erogeString, Eroge.class);
+		String filename;
 		try {
-//			logger.Log(erogeString);
-			ObjectMapper mapper = new ObjectMapper();
-			Eroge eroge = mapper.readValue(erogeString, Eroge.class);
-			logger.Log("brand " + eroge.getBrand());
-//			result.setResult(erogeService.addEroge(eroge));
-			result.setResult(1);
+			//  empty check /  file store
+		    if (!file.isEmpty()) {
+		    	// get filename
+		    	filename = uploadService.storeEroge(file);
+		    } else {
+		    	filename = "noimage.jpg";
+		    }
+	        eroge.setImage(filename);
+			// save to eroge table
+			logger.Log("Title: "+eroge.getTitle());
+			logger.Log("Image file: "+eroge.getImage());
+			result.setResult(erogeService.addEroge(eroge));
 			result.setErrorMessage("OK");
 		}
 		catch (Exception e) {

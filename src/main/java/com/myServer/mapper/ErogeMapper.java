@@ -15,9 +15,9 @@ public class ErogeMapper implements RowMapper<Eroge> {
 		eroge.setGid(rs.getString(2));
 		eroge.setTitle(rs.getString(3));	
 		eroge.setBrand(rs.getString(4));
-
 		eroge.setPrice(rs.getInt(5));	
 		eroge.setReleaseDate(rs.getDate(6));
+		eroge.setImage(rs.getString(7));
 	    return eroge;
 	}
 }

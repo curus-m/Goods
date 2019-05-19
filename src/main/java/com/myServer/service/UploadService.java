@@ -11,7 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 public interface UploadService {
 
 	public void init();
-    public void store(MultipartFile file);
+    public String storeEroge(MultipartFile file);
+    public String storeDakimakura(MultipartFile file);
+    public String storeTapestry(MultipartFile file);
     public Stream<Path> loadAll();
     public Path load(String filename);
     public Resource loadAsResource(String filename);

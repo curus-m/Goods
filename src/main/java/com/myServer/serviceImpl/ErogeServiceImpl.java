@@ -22,15 +22,15 @@ public class ErogeServiceImpl implements ErogeService {
 	}
 	@Override
 	public List<Eroge> getEroge() throws Exception {
-		String query = "select no, gid, title, brand, price, releaseDate from eroge";
+		String query = "select no, gid, title, brand, price, releaseDate, image from eroge";
 		
 		return template.query(query, new ErogeMapper());
 	}
 	@Override
 	public int addEroge(Eroge eroge) throws Exception {
 		final String query =
-				"insert into eroge (no, gid, title, brand, price, releaseDate) "
-				+ "values(nextval('goodsseq'), :gid, :title, :brand, :price,:releaseDate)";
+				"insert into eroge (no, gid, title, brand, price, releaseDate, image) "
+				+ "values(nextval('goodsseq'), :gid, :title, :brand, :price,:releaseDate, :image)";
 				
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
@@ -38,7 +38,8 @@ public class ErogeServiceImpl implements ErogeService {
         		.addValue("title", eroge.getTitle())
         		.addValue("brand", eroge.getBrand())
         		.addValue("price", eroge.getPrice())
-        		.addValue("releaseDate",eroge.getReleaseDate());
+        		.addValue("releaseDate",eroge.getReleaseDate())
+        		.addValue("image", eroge.getImage());
        
 		return template.update(query,param, holder);
 	}
