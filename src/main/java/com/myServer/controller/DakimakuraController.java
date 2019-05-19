@@ -12,11 +12,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myServer.model.Dakimakura;
+import com.myServer.model.Eroge;
 import com.myServer.model.Result;
 import com.myServer.service.DakimakuraService;
+import com.myServer.service.UploadService;
 
 
 @CrossOrigin(origins = "*")
@@ -27,6 +32,9 @@ public class DakimakuraController {
 	
 	@Resource
 	DakimakuraService dakimakuraService;
+
+	@Resource
+    UploadService uploadService;
 	
 	@RequestMapping(value = "/", method=RequestMethod.GET)
 	public @ResponseBody List<Dakimakura> dakimakuraList() throws Exception {
@@ -34,10 +42,19 @@ public class DakimakuraController {
 		return list;
 	}
 	@RequestMapping(value = "/", method=RequestMethod.POST)
-	public @ResponseBody Result addDakimakura(@RequestBody Dakimakura daki) throws Exception {
+	public @ResponseBody Result addDakimakura(@RequestParam("dakimakura") String dakiString, @RequestParam("file") MultipartFile file) throws Exception {
 		Result result = new Result();
+		ObjectMapper mapper = new ObjectMapper();
+		Dakimakura dakimakura= mapper.readValue(dakiString, Dakimakura.class);
+		String filename;
 		try {
-			result.setResult(dakimakuraService.addDakimakura(daki));
+		    if (!file.isEmpty()) {
+		    	filename = uploadService.storeDakimakura(file);
+		    } else {
+		    	filename = "noimage.jpg";
+		    }
+		    dakimakura.setImage(filename);
+			result.setResult(dakimakuraService.addDakimakura(dakimakura));
 			result.setErrorMessage("OK");
 		}
 		catch (Exception e) {

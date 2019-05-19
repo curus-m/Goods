@@ -11,18 +11,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class StaticResourceConfig implements WebMvcConfigurer{
 
-    @Value("${static.resource.location.dakimakura}")
-    private String dakimakuraResourceLocation;
-    
-    @Value("${static.resource.location.eroge}")
-    private String erogeResourceLocation;
+    @Value("${static.resource.location}")
+    private String resourceLocation;
+
     
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/dakimakura/**")
-        .addResourceLocations(dakimakuraResourceLocation).setCachePeriod(3600);
-        registry.addResourceHandler("/resources/eroge/**")
-        .addResourceLocations(erogeResourceLocation).setCachePeriod(3600);
+        registry.addResourceHandler("/resources/**")
+        .addResourceLocations(resourceLocation).setCachePeriod(3600);
+        
     }
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {

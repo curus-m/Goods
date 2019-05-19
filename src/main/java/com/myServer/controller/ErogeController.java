@@ -55,17 +55,12 @@ public class ErogeController {
 		Eroge eroge = mapper.readValue(erogeString, Eroge.class);
 		String filename;
 		try {
-			//  empty check /  file store
 		    if (!file.isEmpty()) {
-		    	// get filename
 		    	filename = uploadService.storeEroge(file);
 		    } else {
 		    	filename = "noimage.jpg";
 		    }
 	        eroge.setImage(filename);
-			// save to eroge table
-			logger.Log("Title: "+eroge.getTitle());
-			logger.Log("Image file: "+eroge.getImage());
 			result.setResult(erogeService.addEroge(eroge));
 			result.setErrorMessage("OK");
 		}
