@@ -42,10 +42,10 @@ public class DakimakuraController {
 		return list;
 	}
 	@RequestMapping(value = "/", method=RequestMethod.POST)
-	public @ResponseBody Result addDakimakura(@RequestParam("dakimakura") String dakiString, @RequestParam("file") MultipartFile file) throws Exception {
+	public @ResponseBody Result addDakimakura(@RequestParam("goods") String dakimakuraString, @RequestParam("file") MultipartFile file) throws Exception {
 		Result result = new Result();
 		ObjectMapper mapper = new ObjectMapper();
-		Dakimakura dakimakura= mapper.readValue(dakiString, Dakimakura.class);
+		Dakimakura dakimakura = mapper.readValue(dakimakuraString, Dakimakura.class);
 		String filename;
 		try {
 		    if (!file.isEmpty()) {
@@ -63,6 +63,7 @@ public class DakimakuraController {
 		}
 		return result;
 	}
+
 	@DeleteMapping("/{no}")
 	public @ResponseBody Result deleteDakimakura(@PathVariable int no) throws Exception {
 		Result result = new Result();

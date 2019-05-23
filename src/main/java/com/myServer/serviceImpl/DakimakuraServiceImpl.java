@@ -29,8 +29,8 @@ public class DakimakuraServiceImpl implements DakimakuraService {
 	@Override
 	public int addDakimakura(Dakimakura daki) throws Exception {
 		final String query =
-				"insert into dakimakura (no, title, brand, price, releaseDate, material, description) "
-				+ "values(nextval('goodsseq'),:title, :brand, :price,:releaseDate, :material, :description)";
+				"insert into dakimakura (no, title, brand, price, releaseDate, material, image, description) "
+				+ "values(nextval('goodsseq'),:title, :brand, :price,:releaseDate, :material, :image, :description)";
 				
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
@@ -39,6 +39,7 @@ public class DakimakuraServiceImpl implements DakimakuraService {
         		.addValue("price", daki.getPrice())
         		.addValue("releaseDate",daki.getReleaseDate())
         		.addValue("material",daki.getMaterial())
+        		.addValue("image",daki.getImage())
         		.addValue("description",daki.getDescription());
 		return template.update(query,param, holder);
 	}

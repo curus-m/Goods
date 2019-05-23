@@ -49,7 +49,7 @@ public class ErogeController {
 		return erogeService.getEroge();
 	}
 	@RequestMapping(value = "/", method=RequestMethod.POST)
-	public @ResponseBody Result addEroge(@RequestParam("eroge") String erogeString, @RequestParam("file") MultipartFile file) throws Exception {
+	public @ResponseBody Result addEroge(@RequestParam("goods") String erogeString, @RequestParam("file") MultipartFile file) throws Exception {
 		Result result = new Result();
 		ObjectMapper mapper = new ObjectMapper();
 		Eroge eroge = mapper.readValue(erogeString, Eroge.class);
