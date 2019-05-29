@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myServer.model.Dakimakura;
-import com.myServer.model.Eroge;
 import com.myServer.model.Result;
 import com.myServer.service.DakimakuraService;
 import com.myServer.service.UploadService;
@@ -63,7 +62,19 @@ public class DakimakuraController {
 		}
 		return result;
 	}
-
+	@RequestMapping(value = "/", method=RequestMethod.PUT)
+	public @ResponseBody Result editDakimakura(@RequestBody Dakimakura dakimakura) throws Exception {
+		Result result = new Result();
+		try {
+			result.setResult(dakimakuraService.editDakimakura(dakimakura));
+			result.setErrorMessage("OK");
+		}
+		catch (Exception e) {
+			result.setResult(0);
+			result.setErrorMessage(e.getMessage());
+		}
+		return result;
+	}
 	@DeleteMapping("/{no}")
 	public @ResponseBody Result deleteDakimakura(@PathVariable int no) throws Exception {
 		Result result = new Result();

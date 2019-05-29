@@ -37,10 +37,13 @@ public class ErogeController {
     UploadService uploadService;
 
 	Logger logger;
+	ObjectMapper mapper;
+	
     @Autowired
     public ErogeController(UploadService uploadService) {
         this.uploadService  = uploadService;
         logger = new Logger(ErogeController.class);
+        mapper = new ObjectMapper();
     }
 
 	@RequestMapping(value = "/", method=RequestMethod.GET)
@@ -51,7 +54,6 @@ public class ErogeController {
 	@RequestMapping(value = "/", method=RequestMethod.POST)
 	public @ResponseBody Result addEroge(@RequestParam("goods") String erogeString, @RequestParam("file") MultipartFile file) throws Exception {
 		Result result = new Result();
-		ObjectMapper mapper = new ObjectMapper();
 		Eroge eroge = mapper.readValue(erogeString, Eroge.class);
 		String filename;
 		try {
@@ -85,7 +87,7 @@ public class ErogeController {
 		return result;
 	}
 	@RequestMapping(value = "/", method=RequestMethod.PUT)
-	public @ResponseBody Result editEroge(@RequestBody Eroge eroge) throws Exception {
+	public @ResponseBody Result editEroge(Eroge eroge) throws Exception {
 		Result result = new Result();
 		try {
 			result.setResult(erogeService.editEroge(eroge));

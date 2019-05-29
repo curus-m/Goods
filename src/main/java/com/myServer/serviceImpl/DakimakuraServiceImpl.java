@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.myServer.mapper.DakimakuraMapper;
 import com.myServer.model.Dakimakura;
+import com.myServer.model.Eroge;
 import com.myServer.service.DakimakuraService;
 
 @Repository
@@ -51,6 +52,23 @@ public class DakimakuraServiceImpl implements DakimakuraService {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
         		.addValue("no", no);
+              
+		return template.update(query,param, holder);
+	}
+
+	@Override
+	public int editDakimakura(Dakimakura daki) throws Exception {
+		final String query =
+				"update dakimakura set title = :title, brand = :brand, price = :price, material = :material"
+				+ " releaseDate = :releaseDate where no = :no";
+        KeyHolder holder = new GeneratedKeyHolder();
+        SqlParameterSource param = new MapSqlParameterSource()
+        		.addValue("title", daki.getTitle())
+        		.addValue("brand", daki.getBrand())
+        		.addValue("price", daki.getPrice())
+        		.addValue("material", daki.getMaterial())
+        		.addValue("releaseDate",daki.getReleaseDate())
+        		.addValue("no",daki.getNo());
               
 		return template.update(query,param, holder);
 	}
