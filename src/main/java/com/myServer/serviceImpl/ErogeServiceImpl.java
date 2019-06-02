@@ -69,5 +69,25 @@ public class ErogeServiceImpl implements ErogeService {
               
 		return template.update(query,param, holder);
 	}
+	@Override
+	public int updateImage(String no, String image) throws Exception {
+		final String query =
+				"update eroge set image = :image where no = :no";
+        KeyHolder holder = new GeneratedKeyHolder();
+        SqlParameterSource param = new MapSqlParameterSource()
+        		.addValue("image",image)
+        		.addValue("no",no);
+              
+		return template.update(query,param, holder);
+		
+	}
+	@Override
+	public String getImage(String no) throws Exception {
+		final String query =
+				"select image from eroge where no = :no";
+        SqlParameterSource param = new MapSqlParameterSource()
+        		.addValue("no",no);
+		return template.queryForObject(query, param, String.class);
+	}
 
 }

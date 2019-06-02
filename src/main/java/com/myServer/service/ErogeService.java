@@ -13,4 +13,6 @@ public interface ErogeService {
 	public int addEroge(Eroge eroge) throws Exception;
 	public int editEroge(Eroge eroge) throws Exception;
 	public int deleteEroge(int no) throws Exception;
+    public int updateImage(String no, String filename) throws Exception;
+    public String getImage(String no) throws Exception;
 }

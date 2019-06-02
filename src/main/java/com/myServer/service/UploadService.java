@@ -18,4 +18,5 @@ public interface UploadService {
     public Path load(String filename);
     public Resource loadAsResource(String filename);
     public void deleteAll();
+	public void deleteFile(String filename);
 }

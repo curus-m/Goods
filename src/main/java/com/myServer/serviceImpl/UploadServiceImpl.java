@@ -1,5 +1,6 @@
 package com.myServer.serviceImpl;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -96,5 +97,10 @@ public class UploadServiceImpl implements UploadService {
 		}
     	return storedFile;
 	}
-
+	public void deleteFile(String filename) {
+		String filePath = erogeResouceLocation.concat("/").concat(filename);
+		File file = new File(filePath);
+		if (file.canRead())
+		{ file.delete(); }
+	}
 }
