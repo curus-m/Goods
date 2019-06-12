@@ -47,7 +47,7 @@ public class ResourceController {
 
 	}
 	@RequestMapping(value = "/eroge", method=RequestMethod.PUT)
-	public @ResponseBody Result setErogeResource(@RequestParam("no") String no, @RequestParam("file") MultipartFile file) throws Exception {
+	public @ResponseBody Result setErogeResource(@RequestParam("no") int no, @RequestParam("file") MultipartFile file) throws Exception {
 		Result result = new Result();
 		String filename = "";
 		try {
