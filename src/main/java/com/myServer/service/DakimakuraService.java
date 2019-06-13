@@ -12,7 +12,7 @@ public interface DakimakuraService {
 	public int addDakimakura(Dakimakura daki) throws Exception;
 	public int editDakimakura(Dakimakura daki) throws Exception;
 	public int deleteDakimakura(int no) throws Exception;
-	public int updateDakimakuraImage(String no, String filename) throws Exception;
-	public int updateImage(String no, String filename) throws Exception;
-    public String getImage(String no) throws Exception;
+	public int updateDakimakuraImage(int no, String filename) throws Exception;
+	public int updateImage(int no, String filename) throws Exception;
+    public String getImage(int no) throws Exception;
 }

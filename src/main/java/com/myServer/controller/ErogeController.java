@@ -87,7 +87,7 @@ public class ErogeController {
 		return result;
 	}
 	@RequestMapping(value = "/", method=RequestMethod.PUT)
-	public @ResponseBody Result editEroge(Eroge eroge) throws Exception {
+	public @ResponseBody Result editEroge(@RequestBody Eroge eroge) throws Exception {
 		Result result = new Result();
 		try {
 			result.setResult(erogeService.editEroge(eroge));

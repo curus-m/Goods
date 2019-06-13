@@ -74,7 +74,7 @@ public class DakimakuraServiceImpl implements DakimakuraService {
 	}
 
 	@Override
-	public int updateDakimakuraImage(String no, String image) throws Exception {
+	public int updateDakimakuraImage(int no, String image) throws Exception {
 		final String query =
 				"update dakimakura set image = :image where no = :no";
         KeyHolder holder = new GeneratedKeyHolder();
@@ -85,7 +85,7 @@ public class DakimakuraServiceImpl implements DakimakuraService {
 		return template.update(query,param, holder);
 	}
 	@Override
-	public int updateImage(String no, String image) throws Exception {
+	public int updateImage(int no, String image) throws Exception {
 		final String query =
 				"update dakimakura set image = :image where no = :no";
         KeyHolder holder = new GeneratedKeyHolder();
@@ -97,7 +97,7 @@ public class DakimakuraServiceImpl implements DakimakuraService {
 		
 	}
 	@Override
-	public String getImage(String no) throws Exception {
+	public String getImage(int no) throws Exception {
 		final String query =
 				"select image from dakimakura where no = :no";
         SqlParameterSource param = new MapSqlParameterSource()

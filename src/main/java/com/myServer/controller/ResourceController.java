@@ -70,7 +70,7 @@ public class ResourceController {
 		return result;
 	}
 	@RequestMapping(value = "/dakimakura", method=RequestMethod.PUT)
-	public @ResponseBody Result setDakimakuraResource(@RequestParam("no") String no, @RequestParam("file") MultipartFile file) throws Exception {
+	public @ResponseBody Result setDakimakuraResource(@RequestParam("no") int no, @RequestParam("file") MultipartFile file) throws Exception {
 		Result result = new Result();
 		String filename = "";
 		try {
