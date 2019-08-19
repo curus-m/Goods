@@ -59,7 +59,7 @@ public class DakimakuraServiceImpl implements DakimakuraService {
 	@Override
 	public int editDakimakura(Dakimakura daki) throws Exception {
 		final String query =
-				"update dakimakura set title = :title, brand = :brand, price = :price, material = :material"
+				"update dakimakura set title = :title, brand = :brand, price = :price, material = :material,"
 				+ " releaseDate = :releaseDate where no = :no";
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
