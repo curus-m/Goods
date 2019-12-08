@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
@@ -22,9 +24,10 @@ import com.myServer.model.Eroge;
 import com.myServer.model.Result;
 import com.myServer.service.ErogeService;
 import com.myServer.service.UploadService;
-import com.myServer.util.Logger;
+import com.myServer.util.Consts;
 
-@CrossOrigin(origins = "*")
+
+@CrossOrigin(origins = Consts.originPath)
 @RequestMapping("/eroge")
 @ComponentScan
 @Controller
@@ -42,13 +45,13 @@ public class ErogeController {
     @Autowired
     public ErogeController(UploadService uploadService) {
         this.uploadService  = uploadService;
-        logger = new Logger(ErogeController.class);
+        logger = LoggerFactory.getLogger(this.getClass());
         mapper = new ObjectMapper();
     }
 
 	@RequestMapping(value = "/", method=RequestMethod.GET)
 	public @ResponseBody List<Eroge> erogeList() throws Exception {
-
+		logger.debug(">>>>>>> Get Eroge");
 		return erogeService.getEroge();
 	}
 	@RequestMapping(value = "/", method=RequestMethod.POST)

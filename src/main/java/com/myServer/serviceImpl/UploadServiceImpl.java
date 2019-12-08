@@ -9,10 +9,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -20,7 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.myServer.service.UploadService;
 import com.myServer.util.Consts;
-import com.myServer.util.Logger;
+
+import software.amazon.awssdk.services.s3.S3Client;
 
 
 @Repository
@@ -33,7 +34,7 @@ public class UploadServiceImpl implements UploadService {
     Logger logger;
     SimpleDateFormat simpleDateFormat;
     public UploadServiceImpl () {
-    	this.logger = new Logger(UploadServiceImpl.class);
+    	this.logger = LoggerFactory.getLogger(this.getClass());
     	simpleDateFormat = new SimpleDateFormat(filePattern);
     }
 	@Override
@@ -90,11 +91,20 @@ public class UploadServiceImpl implements UploadService {
     		throw new RuntimeException("Cannot store file with relative path outside current directory " + filename);
     	}    	
     	String storedFile = filename.concat(".").concat(ext);
-    	try (InputStream inputStream = file.getInputStream()) {
-    		Files.copy(inputStream, resourcePath.resolve(storedFile), StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {	
-			e.printStackTrace();
+		// define target type
+		if(Consts.appPath.contains("WebProject\\Goods")) {
+			// save to local 
+	    	try (InputStream inputStream = file.getInputStream()) {
+	    		Files.copy(inputStream, resourcePath.resolve(storedFile), StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {	
+				e.printStackTrace();
+				this.logger.error("!!!!!!!!" + e);
+			}	
+		} else {
+			// save to aws s3
+		    
 		}
+		
     	return storedFile;
 	}
 	public void deleteFile(String filename) {

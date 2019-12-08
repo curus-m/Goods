@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,9 +24,10 @@ import com.myServer.model.Dakimakura;
 import com.myServer.model.Result;
 import com.myServer.service.DakimakuraService;
 import com.myServer.service.UploadService;
+import com.myServer.util.Consts;
 
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = Consts.originPath)
 @RequestMapping("/dakimakura")
 @ComponentScan
 @Controller
@@ -35,15 +39,25 @@ public class DakimakuraController {
 	@Resource
     UploadService uploadService;
 	
+	Logger logger;
+	ObjectMapper mapper;
+	
+	@Autowired
+    public DakimakuraController(UploadService uploadService) {
+        this.uploadService  = uploadService;
+        logger =  LoggerFactory.getLogger(this.getClass());
+        mapper = new ObjectMapper();
+	}
+	
 	@RequestMapping(value = "/", method=RequestMethod.GET)
 	public @ResponseBody List<Dakimakura> dakimakuraList() throws Exception {
-		List<Dakimakura> list = dakimakuraService.getDakimakura(); 
+		List<Dakimakura> list = dakimakuraService.getDakimakura();
+		logger.debug(">>>>>>> Get Dakimakura");
 		return list;
 	}
 	@RequestMapping(value = "/", method=RequestMethod.POST)
 	public @ResponseBody Result addDakimakura(@RequestParam("goods") String dakimakuraString, @RequestParam("file") MultipartFile file) throws Exception {
 		Result result = new Result();
-		ObjectMapper mapper = new ObjectMapper();
 		Dakimakura dakimakura = mapper.readValue(dakimakuraString, Dakimakura.class);
 		String filename;
 		try {

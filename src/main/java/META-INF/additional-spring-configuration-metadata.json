@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "target",
+  "type": "java.lang.String",
+  "description": "A description for 'target'"
+}]}

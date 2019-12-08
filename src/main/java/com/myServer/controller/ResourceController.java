@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,9 +21,10 @@ import com.myServer.model.Result;
 import com.myServer.service.DakimakuraService;
 import com.myServer.service.ErogeService;
 import com.myServer.service.UploadService;
-import com.myServer.util.Logger;
+import com.myServer.util.Consts;
 
-@CrossOrigin(origins = "*")
+
+@CrossOrigin(origins = Consts.originPath)
 @RequestMapping("/resources")
 @ComponentScan
 @Controller
@@ -38,7 +41,7 @@ public class ResourceController {
 	Logger logger;
 	
 	public ResourceController() {
-        logger = new Logger(ResourceController.class);
+        logger = LoggerFactory.getLogger(this.getClass());
 	}
 	
 	@RequestMapping(value = "/", method=RequestMethod.GET)

@@ -1,6 +1,6 @@
 package com.myServer.model;
 
-public class Dakimakura extends Goods {
+public class Dakimakura extends Goods  {
 	private int material;
 	private String description;
 	public int getMaterial() {

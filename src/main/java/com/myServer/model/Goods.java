@@ -1,10 +1,11 @@
 package com.myServer.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class Goods {
+public class Goods implements Serializable{
 	private String title;	
 	private String brand;
 	@JsonFormat(pattern="yyyy-MM-dd")
