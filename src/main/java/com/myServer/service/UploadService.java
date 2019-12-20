@@ -19,4 +19,5 @@ public interface UploadService {
     public Resource loadAsResource(String filename);
     public void deleteAll();
 	public void deleteFile(String filename);
+	public void saveFileToAws(MultipartFile file) throws Exception;
 }

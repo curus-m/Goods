@@ -3,6 +3,7 @@ package com.myServer.serviceImpl;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,7 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.myServer.service.UploadService;
 import com.myServer.util.Consts;
 
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 
 @Repository
@@ -93,19 +97,38 @@ public class UploadServiceImpl implements UploadService {
     	String storedFile = filename.concat(".").concat(ext);
 		// define target type
 		if(Consts.appPath.contains("WebProject\\Goods")) {
-			// save to local 
-	    	try (InputStream inputStream = file.getInputStream()) {
-	    		Files.copy(inputStream, resourcePath.resolve(storedFile), StandardCopyOption.REPLACE_EXISTING);
-			} catch (IOException e) {	
-				e.printStackTrace();
-				this.logger.error("!!!!!!!!" + e);
-			}	
+			saveFileToLocal(resourcePath.resolve(storedFile), file);
 		} else {
-			// save to aws s3
-		    
+//			saveFileToAws(storedFile, file);
 		}
 		
     	return storedFile;
+	}
+	public void saveFileToLocal(Path path, MultipartFile file) {
+		// save to local 
+    	try (InputStream inputStream = file.getInputStream()) {
+    		Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {	
+			e.printStackTrace();
+			this.logger.error("local file save error!" + e);
+		}
+    	
+		
+	}
+	@Override
+	public void saveFileToAws(MultipartFile file) throws Exception {
+		// save to aws s3
+		String key = "test.jpg";
+		S3Client s3 = S3Client.builder().region(Region.AP_NORTHEAST_1).build();
+		String bucketName = "goods-resources/resources/dakimakura/";
+		
+		ByteBuffer fileBytes;
+		fileBytes = ByteBuffer.wrap(file.getBytes());
+		s3.putObject(PutObjectRequest.builder().bucket(bucketName).key(key)
+                    .build(),
+             RequestBody.fromByteBuffer(fileBytes));
+		
+		logger.trace("save to : " +bucketName + ", " + key + " via aws s3");
 	}
 	public void deleteFile(String filename) {
 		String filePath = erogeResouceLocation.concat("/").concat(filename);
