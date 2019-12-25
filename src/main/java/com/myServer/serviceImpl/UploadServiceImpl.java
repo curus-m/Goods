@@ -14,17 +14,22 @@ import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.myServer.service.UploadService;
+import com.myServer.util.AwsService;
 import com.myServer.util.Consts;
 
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.CreateBucketConfiguration;
+import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 
@@ -32,14 +37,21 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 public class UploadServiceImpl implements UploadService {
 
     
-    private String erogeResouceLocation = Consts.erogeResourcePath;
-    private String dakimakuraResouceLocation = Consts.dakimakuraResourcePath;
+    private String localResourcePath = Consts.localResourcePath;
+    private String awsResourcePath = Consts.awsResourcePath;
     String filePattern = "yyyyMMddHHmmss";
     Logger logger;
     SimpleDateFormat simpleDateFormat;
+    boolean isLocal;
+    @Value("${aws.accessKeyId}")
+    private String awsAccessKey;
+    @Value("${aws.secretKey}")
+    private String awsSecretKey;
+    
     public UploadServiceImpl () {
     	this.logger = LoggerFactory.getLogger(this.getClass());
     	simpleDateFormat = new SimpleDateFormat(filePattern);
+    	this.isLocal = Consts.appPath.contains("WebProject\\Goods");
     }
 	@Override
 	public void init() {
@@ -49,7 +61,14 @@ public class UploadServiceImpl implements UploadService {
 
 	@Override
 	public String storeEroge(MultipartFile file) {
-    	Path resourcePath = Paths.get(erogeResouceLocation);   	
+		Path resourcePath = null;
+		if(this.isLocal) {
+			resourcePath = Paths.get(this.localResourcePath+Consts.Resource_Eroge);
+		}
+		else {
+			resourcePath = Paths.get(this.awsResourcePath+Consts.Resource_Eroge);
+		}
+    	   	
     	return storeGoods(file, resourcePath);
 	}
 
@@ -79,13 +98,25 @@ public class UploadServiceImpl implements UploadService {
 
 	@Override
 	public String storeDakimakura(MultipartFile file) {
-		Path resourcePath = Paths.get(dakimakuraResouceLocation);   	
+		Path resourcePath = null;
+		if(this.isLocal) {
+			resourcePath = Paths.get(this.localResourcePath+Consts.Resource_Dakimakura);
+		}
+		else {
+			resourcePath = Paths.get(this.awsResourcePath+Consts.Resource_Dakimakura);
+		} 	
     	return storeGoods(file, resourcePath);		
 	}
 
 	@Override
 	public String storeTapestry(MultipartFile file) {
-		Path resourcePath = Paths.get(dakimakuraResouceLocation);   	
+		Path resourcePath = null;
+		if(this.isLocal) {
+			resourcePath = Paths.get(this.localResourcePath+Consts.Resource_Tapestry);
+		}
+		else {
+			resourcePath = Paths.get(this.awsResourcePath+Consts.Resource_Tapestry);
+		}   	
     	return storeGoods(file, resourcePath);			
 	}
 	public String storeGoods(MultipartFile file, Path resourcePath) {
@@ -96,10 +127,10 @@ public class UploadServiceImpl implements UploadService {
     	}    	
     	String storedFile = filename.concat(".").concat(ext);
 		// define target type
-		if(Consts.appPath.contains("WebProject\\Goods")) {
+		if(isLocal) {
 			saveFileToLocal(resourcePath.resolve(storedFile), file);
 		} else {
-//			saveFileToAws(storedFile, file);
+			saveFileToAws(resourcePath.resolve(storedFile), file);
 		}
 		
     	return storedFile;
@@ -116,22 +147,37 @@ public class UploadServiceImpl implements UploadService {
 		
 	}
 	@Override
-	public void saveFileToAws(MultipartFile file) throws Exception {
+	public void saveFileToAws(Path path, MultipartFile file) {
 		// save to aws s3
-		String key = "test.jpg";
-		S3Client s3 = S3Client.builder().region(Region.AP_NORTHEAST_1).build();
-		String bucketName = "goods-resources/resources/dakimakura/";
-		
+		String key = "resources/dakimakura/"+path.getFileName();
+		Region region = Region.AP_NORTHEAST_1;
+		S3Client s3 = S3Client.builder().region(region).build();
+
+		String bucketName = "goods-resources";
+
 		ByteBuffer fileBytes;
-		fileBytes = ByteBuffer.wrap(file.getBytes());
-		s3.putObject(PutObjectRequest.builder().bucket(bucketName).key(key)
+		try {
+			fileBytes = ByteBuffer.wrap(file.getBytes());
+			s3.putObject(PutObjectRequest.builder().bucket(bucketName).key(key)
                     .build(),
              RequestBody.fromByteBuffer(fileBytes));
 		
-		logger.trace("save to : " +bucketName + ", " + key + " via aws s3");
+			this.logger.trace("save to : " +bucketName + ", " + key + " via aws s3");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			this.logger.error("aws error: " + e);
+		}
+		
+		s3.close();
+		
 	}
 	public void deleteFile(String filename) {
-		String filePath = erogeResouceLocation.concat("/").concat(filename);
+		String filePath = null;
+		if(isLocal) {
+			filePath = localResourcePath.concat(filename);	
+		}
+		
 		File file = new File(filePath);
 		if (file.canRead())
 		{ file.delete(); }

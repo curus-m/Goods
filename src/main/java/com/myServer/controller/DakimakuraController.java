@@ -107,19 +107,19 @@ public class DakimakuraController {
 	@RequestMapping(value = "/fileTest", method=RequestMethod.POST)
 	public @ResponseBody Result testUpload(@RequestParam("file") MultipartFile file) throws Exception {
 		Result result = new Result();
-		logger.trace(">>>>>>> file upload test");
 		try {
-			uploadService.saveFileToAws(file);
-			
+	//		uploadService.saveFileToAws(file);
+			this.logger.info("save success!");
+			result.setResult(0);
+			result.setErrorMessage("OK");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			this.logger.error("aws file save error!" + e);
+			this.logger.error("aws file save error! " + e);
 			result.setResult(1);
 			result.setErrorMessage(e.getMessage());
 		}
-		result.setResult(0);
-		result.setErrorMessage("OK");
+		
 		return result;
 	}
 }
