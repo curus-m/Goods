@@ -18,9 +18,9 @@ public class MyServerApplicationTests {
 		
 	}
 	
-    @Test
+  /*  @Test
     public void shouldAccessSystemProperty_WhenDefinedInSystemPropertyVariables() {
         Assert.assertEquals("Hello", System.getProperty("greet.spanish"));
-    }
+    } */
 
 }

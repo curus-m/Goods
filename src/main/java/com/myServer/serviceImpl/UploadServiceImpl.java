@@ -26,10 +26,12 @@ import com.myServer.util.Consts;
 
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.core.sync.ResponseTransformer;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.CreateBucketConfiguration;
 import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 
@@ -43,10 +45,6 @@ public class UploadServiceImpl implements UploadService {
     Logger logger;
     SimpleDateFormat simpleDateFormat;
     boolean isLocal;
-    @Value("${aws.accessKeyId}")
-    private String awsAccessKey;
-    @Value("${aws.secretKey}")
-    private String awsSecretKey;
     
     public UploadServiceImpl () {
     	this.logger = LoggerFactory.getLogger(this.getClass());
@@ -160,9 +158,9 @@ public class UploadServiceImpl implements UploadService {
 			fileBytes = ByteBuffer.wrap(file.getBytes());
 			s3.putObject(PutObjectRequest.builder().bucket(bucketName).key(key)
                     .build(),
-             RequestBody.fromByteBuffer(fileBytes));
-		
-			this.logger.trace("save to : " +bucketName + ", " + key + " via aws s3");
+            RequestBody.fromByteBuffer(fileBytes));
+			
+			this.logger.info("save to : " +bucketName + ", " + key + " via aws s3");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
