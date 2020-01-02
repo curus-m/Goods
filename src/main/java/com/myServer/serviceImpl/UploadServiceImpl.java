@@ -1,6 +1,7 @@
 package com.myServer.serviceImpl;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -31,9 +32,14 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.CreateBucketConfiguration;
 import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectAclRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectAclResponse;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.Grant;
+import software.amazon.awssdk.services.s3.model.Grantee;
+import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-
+import software.amazon.awssdk.services.s3.model.Type;
 
 @Repository
 public class UploadServiceImpl implements UploadService {
@@ -155,11 +161,11 @@ public class UploadServiceImpl implements UploadService {
 
 		ByteBuffer fileBytes;
 		try {
-			fileBytes = ByteBuffer.wrap(file.getBytes());
-			s3.putObject(PutObjectRequest.builder().bucket(bucketName).key(key)
-                    .build(),
-            RequestBody.fromByteBuffer(fileBytes));
 			
+
+			fileBytes = ByteBuffer.wrap(file.getBytes());
+			s3.putObject(PutObjectRequest.builder().bucket(bucketName).key(key).acl(ObjectCannedACL.PUBLIC_READ).build(),
+            RequestBody.fromByteBuffer(fileBytes));
 			this.logger.info("save to : " +bucketName + ", " + key + " via aws s3");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
